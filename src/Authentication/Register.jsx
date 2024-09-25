@@ -14,6 +14,7 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [registerData, setRegisterData] = useState({
+        fullName: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -48,8 +49,8 @@ function Register() {
     };
 
     const handleRegister = async () => {
-        const { email, password, confirmPassword } = registerData;
-        if (!email && !password && !confirmPassword) {
+        const { fullName, email, password, confirmPassword } = registerData;
+        if (!fullName && !email && !password && !confirmPassword) {
             toast.error('All is required');
             return;
         }
@@ -73,7 +74,7 @@ function Register() {
         try {
 
             axiosInstance.post('/auth/register', {
-                email, password, confirmPassword
+                fullName, email, password, confirmPassword
             })
             navigate('/login')
         } catch (error) {
@@ -84,11 +85,14 @@ function Register() {
     return (
 
         <div className="sign-in__wrapper" >
-            <div className='login-container'>
+            <div className='Register-container'>
                 <div className='login-card'>
                     Register
                 </div>
                 <div style={{ textAlign: 'center' }}>
+                    <div style={{ margin: "20px " }}>
+                        <TextField size="small" sx={{ width: "90%" }} id="outlined-basic" label="FullName" variant="outlined" name='fullName' value={registerData.fullName} onChange={handleChange} />
+                    </div>
                     <div style={{ margin: "20px " }}>
                         <TextField size="small" sx={{ width: "90%" }} id="outlined-basic" label="Email" variant="outlined" name='email' value={registerData.email} onChange={handleChange} />
                     </div>

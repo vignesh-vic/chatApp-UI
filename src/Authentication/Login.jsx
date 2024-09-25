@@ -9,8 +9,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../config/axiosConfig';
-import { setEmail } from '../slices/Slice';
 import { useDispatch } from 'react-redux';
+import loginLogo from '../images/chatApplogo1.png'
 
 
 export default function Login() {
@@ -47,21 +47,27 @@ export default function Login() {
 
 
     const handleLogin = async () => {
-        setIsLoading(true)
         const { email, password } = loginData
 
         if (!email && !password) return toast.error('All is required');
 
         try {
+            setIsLoading(true)
+
             const response = await axiosInstance.post('/auth/login', { email, password }, { withCredentials: true })
-            if (response?.data?.status === "success") {
-                setIsLoading(false)
-                // localStorage.setItem('token', response.data.token)
+            if (response?.data?.token) {
+                const now = new Date();
+                const expiryTime = now.getTime() + 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+                localStorage.setItem("token", JSON.stringify(response?.data?.token), expiryTime);
+                localStorage.setItem('tokenExpiry', expiryTime);  // Store the expiration time
                 navigate('/chatapp ')
             }
-            // getItemToken()
-
+            if (response?.data?.status === "success") {
+                setIsLoading(false)
+            }
         } catch (error) {
+
             if (error.response && error.response.data.message) {
                 setIsLoading(false)
                 toast.error(error.response.data.message);

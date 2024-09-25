@@ -1,9 +1,11 @@
 
 import { configureStore } from '@reduxjs/toolkit'
-import aurthReducer from '../slices/Slice'
+import loggedInUser from '../slices/Slice'
+import MessageSlice from '../slices/Message.slice'
 
 export const store = configureStore({
     reducer: {
-        aurthReducer
-    },
+        loggedInUser,
+        MessageSlice
+    }
 })
