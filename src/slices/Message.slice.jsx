@@ -18,10 +18,6 @@ export const messageSlice = createSlice({
         addMessage: (state, action) => {
             state.messages.push(action.payload);
         },
-        clearConversation: (state) => {
-            state.selectedConversation = null;
-            state.messages = [];
-        },
     },
 });
 
